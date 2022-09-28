@@ -1,6 +1,7 @@
 export const repeat = (n) => Array.from(Array(n).keys());
 
 export function getMultiSelected(target) {
+    console.log(target)
     return Array.from(target.options).reduce((acc, {selected, value}) => {
         if (selected) {
             acc.push(value)

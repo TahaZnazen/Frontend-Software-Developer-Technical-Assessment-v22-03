@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import { DatePicker } from "reactstrap-date-picker";
 import { createProductForm } from "../../../actions/products";
-import { getMultiSelected, repeat } from "../../../utils";
+import {  repeat } from "../../../utils";
 import { isCategoriesValid, isNameValid } from "./validators";
 
 const ProductForm = (props) => {
@@ -53,7 +53,23 @@ const ProductForm = (props) => {
     }
   }, [rating]);
 
-  return (
+  const handleCategories = (event) => {
+    let options = [...categories], option;
+    for (let i = 0, len = event.target.options.length; i < len; i++) {
+        option = event.target.options[i];
+        if (option.selected) {
+          if( options.indexOf(option.value)=== -1)
+          {
+            options.push(option.value);
+          }
+          else {
+           options = options.filter(elm=> elm !== option.value)
+          }
+        }
+    }
+   setCategories(options)
+  }
+   return (
     <Form onSubmit={onSubmit}>
       <FormGroup>
         <Label for="name">Name</Label>
@@ -106,10 +122,10 @@ const ProductForm = (props) => {
           id="categories"
           multiple
           value={categories}
-          onChange={({ target }) => setCategories(getMultiSelected(target))}
+          onChange={(e) => handleCategories(e)}
         >
           {props.categories.map(({ id, name }) => (
-            <option key={id} value={id}>
+            <option key={id} value={id} >
               {name}
             </option>
           ))}
